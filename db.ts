@@ -30,7 +30,7 @@ const items: {
     sku: 'BANANA-1KG',
     name: 'Banana 1kg',
     description:
-      'The banana is a widely cultivated and popular fruit that belongs to the genus Musa. It is known for its elongated shape, smooth skin, and soft, sweet flesh',
+      'The banana is a widely cultivated and popular fruit that belongs to the genus Musa. It is known for its elongated shape, smooth skin, and soft, sweet flesh. Bananas are a rich source of potassium, vitamin B6, vitamin C, and dietary fiber.',
     price: 1
   },
   {
@@ -38,7 +38,7 @@ const items: {
     sku: 'APPLE-1KG',
     name: 'Apple 1kg',
     description:
-      'The apple is a sweet, edible fruit produced by an apple tree. Apple trees are cultivated worldwide and are the most widely grown species in the genus Malus.',
+      'The apple is a sweet, edible fruit produced by an apple tree. Apple trees are cultivated worldwide and are the most widely grown species in the genus Malus. Apples are a good source of vitamin C, potassium, and dietary fiber.',
     price: 2
   },
   {
@@ -46,7 +46,7 @@ const items: {
     sku: 'MANGO-1KG',
     name: 'Mango 1kg',
     description:
-      'The mango is a juicy stone fruit produced from numerous species of tropical trees belonging to the flowering plant genus Mangifera, cultivated mostly for their edible fruit.',
+      'The mango is a juicy stone fruit produced from numerous species of tropical trees belonging to the flowering plant genus Mangifera, cultivated mostly for their edible fruit. Mangos are rich in vitamin A, vitamin C, vitamin E, and antioxidants.',
     price: 3
   },
   {
@@ -54,7 +54,7 @@ const items: {
     sku: 'PINEAPPLE-1KG',
     name: 'Pineapple 1kg',
     description:
-      'The pineapple is a tropical plant with an edible fruit and the most economically significant plant in the family Bromeliaceae.',
+      'The pineapple is a tropical plant with an edible fruit and the most economically significant plant in the family Bromeliaceae. Pineapples are an excellent source of vitamin C, manganese, and bromelain, an enzyme that aids digestion.',
     price: 4
   },
   {
@@ -62,7 +62,7 @@ const items: {
     sku: 'ORANGE-1KG',
     name: 'Orange 1kg',
     description:
-      'The orange is the fruit of various citrus species in the family Rutaceae; it primarily refers to Citrus sinensis, which is also called sweet orange, to distinguish it from the related Citrus aurantium, referred to as bitter orange.',
+      'The orange is the fruit of various citrus species in the family Rutaceae; it primarily refers to Citrus sinensis, which is also called sweet orange, to distinguish it from the related Citrus aurantium, referred to as bitter orange. Oranges are packed with vitamin C, potassium, and flavonoids.',
     price: 5
   }
 ]
