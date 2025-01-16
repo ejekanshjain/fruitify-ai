@@ -29,7 +29,7 @@ const models = {
 }
 
 async function main() {
-  const loggedInUser = getUserById(1)
+  const loggedInUser = getUserById('67213a4c-2cb6-4549-a87d-87e793bcaa53')
 
   if (!loggedInUser) {
     throw new Error('User not found')
@@ -87,7 +87,7 @@ async function main() {
         addToCart: tool({
           description: 'Add an item to the cart',
           parameters: z.object({
-            itemId: z.number(),
+            itemId: z.string().describe('This is uuid of item, not the sku'),
             quantity: z.number()
           }),
           execute: async ({ itemId, quantity }) => {
@@ -98,7 +98,7 @@ async function main() {
         removeFromCart: tool({
           description: 'Remove an item from the cart',
           parameters: z.object({
-            itemId: z.number()
+            itemId: z.string().describe('This is uuid of item, not the sku')
           }),
           execute: async ({ itemId }) => {
             removeFromCart(loggedInUser.id, itemId)

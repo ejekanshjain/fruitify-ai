@@ -1,22 +1,32 @@
 import { CoreMessage } from 'ai'
 import { randomUUID } from 'crypto'
 
-const USERS = [
+const users: {
+  id: string
+  name: string
+  email: string
+}[] = [
   {
-    id: 1,
+    id: '67213a4c-2cb6-4549-a87d-87e793bcaa53',
     name: 'Ekansh',
-    email: 'ekansh@thedevelopercompany.com'
+    email: 'ejekanshjain@gmail.com'
   },
   {
-    id: 2,
+    id: '24ec82ae-4a11-4690-ad88-f56e3534b298',
     name: 'John Doe',
     email: 'john@doe.com'
   }
 ]
 
-const ITEMS = [
+const items: {
+  id: string
+  sku: string
+  name: string
+  description: string
+  price: number
+}[] = [
   {
-    id: 1,
+    id: 'cc7a5798-0356-4706-a732-562120cb9555',
     sku: 'BANANA-1KG',
     name: 'Banana 1kg',
     description:
@@ -24,7 +34,7 @@ const ITEMS = [
     price: 1
   },
   {
-    id: 2,
+    id: '90d249de-0d93-4eb2-bbd2-3e471bcca3d7',
     sku: 'APPLE-1KG',
     name: 'Apple 1kg',
     description:
@@ -32,7 +42,7 @@ const ITEMS = [
     price: 2
   },
   {
-    id: 3,
+    id: '1a7b0f38-26aa-4441-b604-18deb70c9b27',
     sku: 'MANGO-1KG',
     name: 'Mango 1kg',
     description:
@@ -40,7 +50,7 @@ const ITEMS = [
     price: 3
   },
   {
-    id: 4,
+    id: '965b9bb6-f0c1-4e07-9080-b32cca3e4662',
     sku: 'PINEAPPLE-1KG',
     name: 'Pineapple 1kg',
     description:
@@ -48,7 +58,7 @@ const ITEMS = [
     price: 4
   },
   {
-    id: 5,
+    id: '6729dbd8-369b-48d4-bd42-aff0d15efffd',
     sku: 'ORANGE-1KG',
     name: 'Orange 1kg',
     description:
@@ -57,45 +67,45 @@ const ITEMS = [
   }
 ]
 
-const CART: {
+const cart: {
   id: string
-  userId: number
-  itemId: number
+  userId: string
+  itemId: string
   quantity: number
 }[] = [
   {
-    id: '2325252',
-    userId: 1,
-    itemId: 2,
-    quantity: 5
+    id: '3d7a654f-fb90-4d23-9027-37207072bb78',
+    userId: '67213a4c-2cb6-4549-a87d-87e793bcaa53',
+    itemId: '6729dbd8-369b-48d4-bd42-aff0d15efffd',
+    quantity: 2
   }
 ]
 
-const SAVED_CHATS: {
+const chats: {
   id: string
-  userId: number
+  userId: string
   messages: CoreMessage[]
 }[] = []
 
-const ORDERS: {
+const orders: {
   id: string
-  userId: number
+  userId: string
   date: Date
   total: number
   items: {
-    itemId: number
+    itemId: string
     quantity: number
     price: number
   }[]
 }[] = [
   {
     id: '1',
-    userId: 1,
+    userId: '67213a4c-2cb6-4549-a87d-87e793bcaa53',
     date: new Date('2024-12-17'),
     total: 10,
     items: [
       {
-        itemId: 1,
+        itemId: '90d249de-0d93-4eb2-bbd2-3e471bcca3d7',
         quantity: 10,
         price: 1
       }
@@ -103,11 +113,11 @@ const ORDERS: {
   }
 ]
 
-export const getUserById = (userId: number) => {
-  return USERS.find(user => user.id === userId)
+export const getUserById = (userId: string) => {
+  return users.find(user => user.id === userId)
 }
 
-export const createChat = (userId: number) => {
+export const createChat = (userId: string) => {
   const user = getUserById(userId)
 
   if (!user) {
@@ -122,7 +132,7 @@ export const createChat = (userId: number) => {
     messages: [
       {
         role: 'system',
-        content: `Your name is FruitBot. You are a helpful ecommerce assistant of "Fruitify.com". You are there to help customers do things like find products, answer questions about products, add item to cart, help them make purchases, ask about their order history. Current chatId is "${chatId}", userId is "${userId}", and name is "${user.name}".`
+        content: `Your name is FruitBot. You are a helpful ecommerce assistant of "Fruitify.com". You are there to help customers do things like find products, answer questions about products, add item to cart, help them make purchases, ask about their order history. Current chatId is "${chatId}", userId is "${userId}", and name is "${user.name}". Always reply with a very layman easy, simple language.`
       },
       {
         role: 'assistant',
@@ -132,74 +142,78 @@ export const createChat = (userId: number) => {
     ] as CoreMessage[]
   }
 
-  SAVED_CHATS.push(chat)
+  chats.push(chat)
 
   return chat
 }
 
 export const listItems = (page: number, limit: number) => {
-  return ITEMS.slice((page - 1) * limit, page * limit)
+  return items.slice((page - 1) * limit, page * limit)
 }
 
 export const searchItems = (search: string, page: number, limit: number) => {
-  return ITEMS.filter(
-    item =>
-      item.id === Number(search) ||
-      item.sku.toLowerCase() === search.toLowerCase() ||
-      item.name.toLowerCase().includes(search.toLowerCase())
-  ).slice((page - 1) * limit, page * limit)
+  return items
+    .filter(
+      item =>
+        item.id === search ||
+        item.sku.toLowerCase() === search.toLowerCase() ||
+        item.name.toLowerCase().includes(search.toLowerCase())
+    )
+    .slice((page - 1) * limit, page * limit)
 }
 
-export const getItemById = (itemId: number) => {
-  return ITEMS.find(item => item.id === itemId)
+export const getItemById = (itemId: string) => {
+  return items.find(item => item.id === itemId)
 }
 
-export const getCart = (userId: number) => {
-  const items = CART.filter(cart => cart.userId === userId)
-  return {
-    items: items.map(i => ({
+export const getCart = (userId: string) => {
+  const cartItems = cart
+    .filter(cart => cart.userId === userId)
+    .map(i => ({
       ...i,
-      itemDetails: ITEMS.find(item => item.id === i.itemId)
-    })),
-    total: items.reduce((acc, cart) => {
-      const item = ITEMS.find(item => item.id === cart.itemId)
-      return acc + item!.price * cart.quantity
-    }, 0)
+      itemDetails: items.find(item => item.id === i.itemId)
+    }))
+  return {
+    items: cartItems,
+    total: cartItems.reduce(
+      (acc, cart) => acc + cart!.itemDetails!.price * cart.quantity,
+      0
+    )
   }
 }
 
-export const addToCart = (userId: number, itemId: number, quantity: number) => {
-  const item = ITEMS.find(item => item.id === itemId)
+export const addToCart = (userId: string, itemId: string, quantity: number) => {
+  const item = items.find(item => item.id === itemId)
   if (!item) {
     throw new Error('Item not found')
   }
 
-  const alreadyInCart = CART.find(
+  const alreadyInCart = cart.find(
     cart => cart.userId === userId && cart.itemId === itemId
   )
   if (alreadyInCart) {
     alreadyInCart.quantity += quantity
-  } else CART.push({ id: randomUUID(), userId, itemId, quantity })
+  } else cart.push({ id: randomUUID(), userId, itemId, quantity })
 }
 
-export const removeFromCart = (userId: number, itemId: number) => {
-  const index = CART.findIndex(
+export const removeFromCart = (userId: string, itemId: string) => {
+  const index = cart.findIndex(
     cart => cart.userId === userId && cart.itemId === itemId
   )
   if (index !== -1) {
-    CART.splice(index, 1)
+    cart.splice(index, 1)
   }
 }
 
-export const emptyCart = (userId: number) => {
-  let index = CART.findIndex(cart => cart.userId === userId)
+export const emptyCart = (userId: string) => {
+  let index = cart.findIndex(cart => cart.userId === userId)
   while (index !== -1) {
-    CART.splice(index, 1)
-    index = CART.findIndex(cart => cart.userId === userId)
+    cart.splice(index, 1)
+    index = cart.findIndex(cart => cart.userId === userId)
   }
 }
 
-export const createOrder = (userId: number) => {
+export const createOrder = (userId: string) => {
   const cart = getCart(userId)
   const order = {
     id: randomUUID(),
@@ -208,17 +222,17 @@ export const createOrder = (userId: number) => {
     items: cart.items.map(cart => ({
       itemId: cart.itemId,
       quantity: cart.quantity,
-      price: ITEMS.find(item => item.id === cart.itemId)!.price
+      price: items.find(item => item.id === cart.itemId)!.price
     })),
     date: new Date()
   }
-  ORDERS.push(order)
+  orders.push(order)
   emptyCart(userId)
   return order
 }
 
 export const getOrders = (
-  userId: number,
+  userId: string,
   page: number,
   limit: number,
   dateRange?: {
@@ -226,17 +240,19 @@ export const getOrders = (
     end: Date
   }
 ) => {
-  const orders = ORDERS.filter(order =>
-    order.userId === userId && dateRange
-      ? order.date > dateRange.start && order.date < dateRange.end
-      : true
-  ).slice((page - 1) * limit, page * limit)
+  const filteredOrders = orders
+    .filter(order =>
+      order.userId === userId && dateRange
+        ? order.date > dateRange.start && order.date < dateRange.end
+        : true
+    )
+    .slice((page - 1) * limit, page * limit)
 
-  return orders.map(o => ({
+  return filteredOrders.map(o => ({
     ...o,
     items: o.items.map(item => ({
       ...item,
-      itemDetails: ITEMS.find(i => i.id === item.itemId)
+      itemDetails: items.find(i => i.id === item.itemId)
     }))
   }))
 }
