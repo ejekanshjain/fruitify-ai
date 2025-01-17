@@ -147,19 +147,23 @@ export const createChat = (userId: string) => {
   return chat
 }
 
-export const listItems = (page: number, limit: number) => {
-  return items.slice((page - 1) * limit, page * limit)
+export const listItems = (input: { page: number; limit: number }) => {
+  return items.slice((input.page - 1) * input.limit, input.page * input.limit)
 }
 
-export const searchItems = (search: string, page: number, limit: number) => {
+export const searchItems = (input: {
+  search: string
+  page: number
+  limit: number
+}) => {
   return items
     .filter(
       item =>
-        item.id === search ||
-        item.sku.toLowerCase() === search.toLowerCase() ||
-        item.name.toLowerCase().includes(search.toLowerCase())
+        item.id === input.search ||
+        item.sku === input.search ||
+        item.name.toLowerCase().includes(input.search.toLowerCase())
     )
-    .slice((page - 1) * limit, page * limit)
+    .slice((input.page - 1) * input.limit, input.page * input.limit)
 }
 
 export const getItemById = (itemId: string) => {
@@ -182,23 +186,33 @@ export const getCart = (userId: string) => {
   }
 }
 
-export const addToCart = (userId: string, itemId: string, quantity: number) => {
-  const item = items.find(item => item.id === itemId)
+export const addToCart = (input: {
+  userId: string
+  itemId: string
+  quantity: number
+}) => {
+  const item = items.find(item => item.id === input.itemId)
   if (!item) {
     throw new Error('Item not found')
   }
 
   const alreadyInCart = cart.find(
-    cart => cart.userId === userId && cart.itemId === itemId
+    cart => cart.userId === input.userId && cart.itemId === input.itemId
   )
   if (alreadyInCart) {
-    alreadyInCart.quantity += quantity
-  } else cart.push({ id: randomUUID(), userId, itemId, quantity })
+    alreadyInCart.quantity += input.quantity
+  } else
+    cart.push({
+      id: randomUUID(),
+      userId: input.userId,
+      itemId: input.itemId,
+      quantity: input.quantity
+    })
 }
 
-export const removeFromCart = (userId: string, itemId: string) => {
+export const removeFromCart = (input: { userId: string; itemId: string }) => {
   const index = cart.findIndex(
-    cart => cart.userId === userId && cart.itemId === itemId
+    cart => cart.userId === input.userId && cart.itemId === input.itemId
   )
   if (index !== -1) {
     cart.splice(index, 1)
@@ -231,22 +245,22 @@ export const createOrder = (userId: string) => {
   return order
 }
 
-export const getOrders = (
-  userId: string,
-  page: number,
-  limit: number,
+export const getOrders = (input: {
+  page: number
+  limit: number
+  userId: string
   dateRange?: {
     start: Date
     end: Date
   }
-) => {
+}) => {
   const filteredOrders = orders
     .filter(order =>
-      order.userId === userId && dateRange
-        ? order.date > dateRange.start && order.date < dateRange.end
+      order.userId === input.userId && input.dateRange
+        ? order.date > input.dateRange.start && order.date < input.dateRange.end
         : true
     )
-    .slice((page - 1) * limit, page * limit)
+    .slice((input.page - 1) * input.limit, input.page * input.limit)
 
   return filteredOrders.map(o => ({
     ...o,
